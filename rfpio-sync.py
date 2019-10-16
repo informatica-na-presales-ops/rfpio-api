@@ -1,32 +1,26 @@
 import csv
 import logging
 import os
-import pathlib
 import requests
 import sys
+
+from typing import Dict
 
 log = logging.getLogger(__name__)
 if __name__ == '__main__':
     log = logging.getLogger('rfpio_sync')
 
 
-def version():
-    dockerfile: pathlib.Path = pathlib.Path(__file__).resolve().parent / 'Dockerfile'
-    with dockerfile.open() as f:
-        for line in f:
-            if 'org.opencontainers.image.version' in line:
-                return line.strip().split('=', maxsplit=1)[1]
-    return 'unknown'
-
-
-def save_projects(projects):
+def save_projects(projects, user_list=None):
+    if user_list is None:
+        user_list = {}
     csv_field_names = [
         'project_id', 'project_name', 'client_name', 'status', 'project_type', 'stage', 'stage_comments',
         'sf_opportunity_stage', 'project_value', 'created_date', 'due_date', 'completed_date', 'last_updated_date',
-        'archived_date', 'project_owner', 'additional_primary_contacts', 'num_of_people', 'requester_email',
-        'signed_nda', 'region', 'sf_account_id', 'sf_opportunity_id', 'software_location', 'test_project_field',
-        'education_services_needed', 'list_of_products', 'ips_or_services_needed', 'num_sections', 'num_questions',
-        'num_not_answered', 'num_answer_library_used', 'num_manual'
+        'archived_date', 'project_owner', 'project_owner_name', 'additional_primary_contacts', 'num_of_people',
+        'requester_email', 'signed_nda', 'region', 'sf_account_id', 'sf_opportunity_id', 'software_location',
+        'test_project_field', 'education_services_needed', 'list_of_products', 'ips_or_services_needed', 'num_sections',
+        'num_questions', 'num_not_answered', 'num_answer_library_used', 'num_manual'
     ]
     with open(os.getenv('OUTPUT_FILE'), 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=csv_field_names)
@@ -51,6 +45,7 @@ def save_projects(projects):
                 'last_updated_date': p.get('lastUpdateTs', '')[:10],
                 'archived_date': p.get('archivedDate', '')[:10],
                 'project_owner': p.get('ownedBy'),
+                'project_owner_name': user_list.get(p.get('ownedBy')),
                 'additional_primary_contacts': ', '.join(p.get('additionalContacts', [])),
                 'num_of_people': len(p.get('teamMembers', [])),
                 'requester_email': p.get('customFields', {}).get('useremailaddress'),
@@ -72,12 +67,11 @@ def save_projects(projects):
             writer.writerow(pd)
 
 
-def get_projects():
+def get_projects(token):
     projects = []
     s = requests.Session()
     count_url = 'https://app.rfpio.com/rfpserver/projects/respond/get-count'
     projects_url = 'https://app.rfpio.com/rfpserver/projects/respond/get-filtered-projects'
-    token = os.getenv('RFPIO_TOKEN')
     headers = {
         'authorization': f'Bearer {token}'
     }
@@ -97,16 +91,35 @@ def get_projects():
     return projects
 
 
+def get_users(token) -> Dict:
+    users = {}
+    s = requests.Session()
+    users_url = 'https://app.rfpio.com/rfpserver/load/user-load-details'
+    headers = {
+        'authorization': f'Bearer {token}'
+    }
+    users_resp = s.get(users_url, headers=headers)
+    users_resp.raise_for_status()
+    for u in users_resp.json().get('userVOList').get('users'):
+        username = u.get('userName')
+        display_name = u.get('displayName')
+        users.update({username: display_name})
+    return users
+
+
 def main():
     log_format = os.getenv('LOG_FORMAT', '%(levelname)s [%(name)s] %(message)s')
     log_level = os.getenv('LOG_LEVEL', 'INFO')
     logging.basicConfig(format=log_format, level='DEBUG', stream=sys.stdout)
-    log.debug(f'rfpio-sync {version()}')
+    version = os.getenv('APP_VERSION', 'unknown')
+    log.debug(f'rfpio-sync {version}')
     if not log_level == 'DEBUG':
         log.debug(f'Setting log level to {log_level}')
     logging.getLogger().setLevel(log_level)
-    projects = get_projects()
-    save_projects(projects)
+    token = os.getenv('RFPIO_TOKEN')
+    user_list = get_users(token)
+    projects = get_projects(token)
+    save_projects(projects, user_list)
     log.info(f'Found {len(projects)} projects')
 
 
