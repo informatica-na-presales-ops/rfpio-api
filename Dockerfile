@@ -4,7 +4,6 @@ COPY requirements.txt /rfpio-sync/requirements.txt
 
 RUN /usr/local/bin/pip install --no-cache-dir --requirement /rfpio-sync/requirements.txt
 
-COPY Dockerfile /rfpio-sync/Dockerfile
 COPY rfpio-sync.py /rfpio-sync/rfpio-sync.py
 
 ENV APP_VERSION="2019.2" \
