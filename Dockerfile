@@ -19,4 +19,4 @@ CMD ["/rfpio-sync/rfpio-sync.py"]
 LABEL org.opencontainers.image.authors="William Jackson <wjackson@informatica.com>" \
       org.opencontainers.image.description="Sync all RFPIO project information to a CSV file" \
       org.opencontainers.image.title="RFPIO Sync" \
-      org.opencontainers.image.version=1.0.0
+      org.opencontainers.image.version=2.0.0
