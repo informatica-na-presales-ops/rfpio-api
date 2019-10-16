@@ -23,10 +23,10 @@ def save_projects(projects):
     csv_field_names = [
         'project_id', 'project_name', 'client_name', 'status', 'project_type', 'stage', 'stage_comments',
         'sf_opportunity_stage', 'project_value', 'created_date', 'due_date', 'completed_date', 'last_updated_date',
-        'project_owner', 'additional_primary_contacts', 'num_of_people', 'requester_email', 'signed_nda', 'region',
-        'sf_account_id', 'sf_opportunity_id', 'software_location', 'test_project_field', 'education_services_needed',
-        'list_of_products', 'ips_or_services_needed', 'num_sections', 'num_questions', 'num_not_answered',
-        'num_answer_library_used', 'num_manual'
+        'archived_date', 'project_owner', 'additional_primary_contacts', 'num_of_people', 'requester_email',
+        'signed_nda', 'region', 'sf_account_id', 'sf_opportunity_id', 'software_location', 'test_project_field',
+        'education_services_needed', 'list_of_products', 'ips_or_services_needed', 'num_sections', 'num_questions',
+        'num_not_answered', 'num_answer_library_used', 'num_manual'
     ]
     with open(os.getenv('OUTPUT_FILE'), 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=csv_field_names)
@@ -49,6 +49,7 @@ def save_projects(projects):
                 'due_date': p.get('dueDate', '')[:10],
                 'completed_date': p.get('respondedDate', '')[:10],
                 'last_updated_date': p.get('lastUpdateTs', '')[:10],
+                'archived_date': p.get('archivedDate', '')[:10],
                 'project_owner': p.get('ownedBy'),
                 'additional_primary_contacts': ', '.join(p.get('additionalContacts', [])),
                 'num_of_people': len(p.get('teamMembers', [])),
