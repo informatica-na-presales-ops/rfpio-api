@@ -1,12 +1,22 @@
 import csv
 import logging
 import os
+import pathlib
 import requests
 import sys
 
 log = logging.getLogger(__name__)
 if __name__ == '__main__':
     log = logging.getLogger('rfpio_sync')
+
+
+def version():
+    dockerfile: pathlib.Path = pathlib.Path(__file__).resolve().parent / 'Dockerfile'
+    with dockerfile.open() as f:
+        for line in f:
+            if 'org.opencontainers.image.version' in line:
+                return line.strip().split('=', maxsplit=1)[1]
+    return 'unknown'
 
 
 def save_projects(projects):
@@ -71,6 +81,9 @@ def get_projects():
         'authorization': f'Bearer {token}'
     }
     count_resp = s.post(count_url, headers=headers, json={})
+    if count_resp.status_code == 401:
+        log.critical(f'Unauthorized. Is your RFPIO_TOKEN correct? ({token})')
+        return projects
     for status, count in count_resp.json().items():
         payload = {
             'status': status,
@@ -87,7 +100,7 @@ def main():
     log_format = os.getenv('LOG_FORMAT', '%(levelname)s [%(name)s] %(message)s')
     log_level = os.getenv('LOG_LEVEL', 'INFO')
     logging.basicConfig(format=log_format, level='DEBUG', stream=sys.stdout)
-    log.debug('rfpio-sync 1.0.0')
+    log.debug(f'rfpio-sync {version()}')
     if not log_level == 'DEBUG':
         log.debug(f'Setting log level to {log_level}')
     logging.getLogger().setLevel(log_level)
