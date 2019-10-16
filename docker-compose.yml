@@ -2,5 +2,5 @@ version: '3'
 
 services:
   rfpio-sync:
-    image: informaticanapresalesops.azurecr.io/rfpio-sync
+    image: docker.pkg.github.com/informatica-na-presales-ops/rfpio-sync/rfpio-sync
     build: .
