@@ -6,7 +6,7 @@ RUN /usr/local/bin/pip install --no-cache-dir --requirement /rfpio-sync/requirem
 
 COPY rfpio-sync.py /rfpio-sync/rfpio-sync.py
 
-ENV APP_VERSION="2019.2" \
+ENV APP_VERSION="2019.3" \
     LOG_FORMAT="%(levelname)s [%(name)s] %(message)s" \
     LOG_LEVEL="INFO" \
     OUTPUT_FILE="/data/rfpio.csv" \
