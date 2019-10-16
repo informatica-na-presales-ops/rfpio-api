@@ -12,7 +12,9 @@ ENV APP_VERSION="2019.1" \
     LOG_LEVEL="INFO" \
     OUTPUT_FILE="/data/rfpio.csv" \
     PYTHONUNBUFFERED="1" \
-    RFPIO_TOKEN=""
+    RFPIO_TOKEN="" \
+    SYNC_INTERVAL="6" \
+    TZ="Etc/UTC"
 
 ENTRYPOINT ["/usr/local/bin/python"]
 CMD ["/rfpio-sync/rfpio-sync.py"]

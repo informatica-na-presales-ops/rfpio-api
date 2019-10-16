@@ -1,3 +1,4 @@
+import apscheduler.schedulers.blocking
 import csv
 import logging
 import os
@@ -7,8 +8,6 @@ import sys
 from typing import Dict
 
 log = logging.getLogger(__name__)
-if __name__ == '__main__':
-    log = logging.getLogger('rfpio_sync')
 
 
 def save_projects(projects, user_list=None):
@@ -107,6 +106,14 @@ def get_users(token) -> Dict:
     return users
 
 
+def main_job():
+    token = os.getenv('RFPIO_TOKEN')
+    user_list = get_users(token)
+    projects = get_projects(token)
+    save_projects(projects, user_list)
+    log.info(f'Found {len(projects)} projects')
+
+
 def main():
     log_format = os.getenv('LOG_FORMAT', '%(levelname)s [%(name)s] %(message)s')
     log_level = os.getenv('LOG_LEVEL', 'INFO')
@@ -116,11 +123,11 @@ def main():
     if not log_level == 'DEBUG':
         log.debug(f'Setting log level to {log_level}')
     logging.getLogger().setLevel(log_level)
-    token = os.getenv('RFPIO_TOKEN')
-    user_list = get_users(token)
-    projects = get_projects(token)
-    save_projects(projects, user_list)
-    log.info(f'Found {len(projects)} projects')
+
+    scheduler = apscheduler.schedulers.blocking.BlockingScheduler()
+    scheduler.add_job(main_job, 'interval', hours=int(os.getenv('SYNC_INTERVAL', '6')))
+    scheduler.add_job(main_job)
+    scheduler.start()
 
 
 if __name__ == '__main__':
