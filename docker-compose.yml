@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  rfpio-sync:
+    image: infapresalesoperationsacr.azurecr.io/rfpio-sync
+    build: .
