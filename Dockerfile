@@ -7,11 +7,11 @@ RUN /usr/local/bin/pip install --no-cache-dir --requirement /rfpio-sync/requirem
 COPY Dockerfile /rfpio-sync/Dockerfile
 COPY rfpio-sync.py /rfpio-sync/rfpio-sync.py
 
-ENV LOG_FORMAT %(levelname)s [%(name)s] %(message)s
-ENV LOG_LEVEL INFO
-ENV OUTPUT_FILE /data/rfpio.csv
-ENV PYTHONUNBUFFERED 1
-ENV RFPIO_TOKEN placeholder
+ENV LOG_FORMAT="%(levelname)s [%(name)s] %(message)s" \
+    LOG_LEVEL="INFO" \
+    OUTPUT_FILE="/data/rfpio.csv" \
+    PYTHONUNBUFFERED="1" \
+    RFPIO_TOKEN="placeholder"
 
 ENTRYPOINT ["/usr/local/bin/python"]
 CMD ["/rfpio-sync/rfpio-sync.py"]
