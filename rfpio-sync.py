@@ -19,7 +19,7 @@ def save_projects(projects, user_list=None):
         'archived_date', 'project_owner', 'project_owner_name', 'additional_primary_contacts', 'num_of_people',
         'requester_email', 'signed_nda', 'region', 'sf_account_id', 'sf_opportunity_id', 'software_location',
         'test_project_field', 'education_services_needed', 'list_of_products', 'ips_or_services_needed', 'num_sections',
-        'num_questions', 'num_not_answered', 'num_answer_library_used', 'num_manual'
+        'num_questions', 'num_not_answered', 'num_answer_library_used', 'num_manual', 'internal_id', 'company_id'
     ]
     with open(os.getenv('OUTPUT_FILE'), 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=csv_field_names)
@@ -61,7 +61,9 @@ def save_projects(projects, user_list=None):
                 'num_questions': p.get('totalQuestionCount', 0),
                 'num_not_answered': p.get('totalQuestionCount', 0) - p.get('totalAnsweredCount', 0),
                 'num_answer_library_used': p.get('totalAnsweredUsingAL', 0),
-                'num_manual': p.get('totalAnsweredCount', 0) - p.get('totalAnsweredUsingAL', 0)
+                'num_manual': p.get('totalAnsweredCount', 0) - p.get('totalAnsweredUsingAL', 0),
+                'internal_id': p.get('id'),
+                'company_id': p.get('companyId')
             }
             writer.writerow(pd)
 
