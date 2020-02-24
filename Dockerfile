@@ -7,12 +7,8 @@ RUN /usr/local/bin/pip install --no-cache-dir --requirement /rfpio-sync/requirem
 COPY rfpio-sync.py /rfpio-sync/rfpio-sync.py
 
 ENV APP_VERSION="2020.1" \
-    LOG_FORMAT="%(levelname)s [%(name)s] %(message)s" \
-    LOG_LEVEL="INFO" \
     OUTPUT_FILE="/data/rfpio.csv" \
     PYTHONUNBUFFERED="1" \
-    RFPIO_TOKEN="" \
-    SYNC_INTERVAL="6" \
     TZ="Etc/UTC"
 
 ENTRYPOINT ["/usr/local/bin/python"]

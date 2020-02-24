@@ -127,7 +127,7 @@ def main():
     logging.getLogger().setLevel(log_level)
 
     scheduler = apscheduler.schedulers.blocking.BlockingScheduler()
-    scheduler.add_job(main_job, 'interval', hours=int(os.getenv('SYNC_INTERVAL', '6')))
+    scheduler.add_job(main_job, 'interval', minutes=int(os.getenv('SYNC_INTERVAL', '60')))
     scheduler.add_job(main_job)
     scheduler.start()
 
