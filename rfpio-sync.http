@@ -1,0 +1,18 @@
+POST https://app.rfpio.com/rfpserver/ext/v1/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limit": 1,
+  "projectStatus": [
+    "IN_PROGRESS"
+  ]
+}
+
+###
+
+GET https://app.rfpio.com/rfpserver/ext/v1/projects/5c9b9013c51a592ef0f388c0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###

@@ -1,0 +1,27 @@
+POST https://app.rfpio.com/rfpserver/projects/respond/get-count
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+#{}
+
+###
+
+POST https://app.rfpio.com/rfpserver/projects/respond/get-filtered-projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status":  "ARCHIVED",
+  "limit": 1,
+  "query": {
+    "sortBy": "due_date",
+    "sortingOrder": 1
+  }
+}
+
+###
+
+GET https://app.rfpio.com/rfpserver/load/user-load-details
+Authorization: Bearer {{token}}
+
+###
