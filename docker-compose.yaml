@@ -1,7 +1,6 @@
-version: '3.7'
+version: '3.8'
 
 services:
   rfpio-sync:
-    image: docker.pkg.github.com/informatica-na-presales-ops/rfpio-sync/rfpio-sync
-    build: .
+    image: ghcr.io/informatica-na-presales-ops/rfpio-api
     init: true
