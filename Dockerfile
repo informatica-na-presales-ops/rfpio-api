@@ -1,7 +1,8 @@
 FROM python:3.9.1-alpine3.13
 
-COPY requirements.txt /rfpio-api/requirements.txt
+RUN /sbin/apk add --no-cache libpq
 
+COPY requirements.txt /rfpio-api/requirements.txt
 RUN /usr/local/bin/pip install --no-cache-dir --requirement /rfpio-api/requirements.txt
 
 COPY get-projects.py /rfpio-api/get-projects.py
