@@ -1,6 +1,6 @@
 version: '3.8'
 
 services:
-  rfpio-sync:
+  rfpio-api:
     image: ghcr.io/informatica-na-presales-ops/rfpio-api
     init: true
