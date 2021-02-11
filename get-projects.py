@@ -7,7 +7,7 @@ import sys
 
 from typing import Dict
 
-log = logging.getLogger(__name__)
+log = logging.getLogger('rfpio_api.get_projects')
 
 
 def save_projects(projects, user_list=None):
@@ -121,7 +121,7 @@ def main():
     log_level = os.getenv('LOG_LEVEL', 'INFO')
     logging.basicConfig(format=log_format, level='DEBUG', stream=sys.stdout)
     version = os.getenv('APP_VERSION', 'unknown')
-    log.debug(f'rfpio-sync {version}')
+    log.debug(f'rfpio_api.get_projects {version}')
     if not log_level == 'DEBUG':
         log.debug(f'Setting log level to {log_level}')
     logging.getLogger().setLevel(log_level)
