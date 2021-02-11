@@ -1,0 +1,64 @@
+POST https://app.rfpio.com/rfpserver/ext/v1/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limit": 1,
+  "projectStatus": [
+    "IN_PROGRESS"
+  ]
+}
+
+###
+
+GET https://app.rfpio.com/rfpserver/ext/v1/projects/{{project-id}}/get-question-activities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+GET https://app.rfpio.com/rfpserver/ext/v1/projects/{{project-id}}/activities?limit=500
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+# activity types:
+# FILE_ADDED
+# FILE_IMPORTED
+# FILE_IMPORTED_CONFIG_BACKUP
+# PROJECT_CREATED
+# PROJECT_INFO_CHANGED
+# PROJECT_PACKAGE_REQUEST_COMPLETED
+# PROJECT_PACKAGE_REQUEST_DOWNLOADED
+# PROJECT_PACKAGE_REQUESTED = export
+# PROJECT_STATUS_CHANGED
+# PROJECT_UNARCHIVED
+# SECTION_ADDED
+# SECTION_STATUS_CHANGED
+# SETTINGS_CHANGED
+
+###
+
+GET https://app.rfpio.com/rfpserver/ext/v1/projects/{{project-id}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+GET https://app.rfpio.com/rfpserver/ext/v1/users?limit=25
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+POST https://app.rfpio.com/rfpserver/ext/v1/answer-lib/search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+# to get the next page, use the value from 'nextCursorMark' in the request as 'cursor'
+
+{
+  "limit": 1,
+  "metadata": true
+}
+
+###
