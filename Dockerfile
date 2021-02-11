@@ -6,6 +6,7 @@ COPY requirements.txt /rfpio-api/requirements.txt
 RUN /usr/local/bin/pip install --no-cache-dir --requirement /rfpio-api/requirements.txt
 
 COPY get-projects.py /rfpio-api/get-projects.py
+COPY get-answers.py /rfpio-api/get-answers.py
 
 ENV APP_VERSION="2020.2" \
     OUTPUT_FILE="/data/rfpio.csv" \
