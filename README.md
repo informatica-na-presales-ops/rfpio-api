@@ -1,3 +1,3 @@
-# rfpio-sync
+# rfpio-api
 
-Sync project data from RFPIO to a CSV file.
+Tools for working with the RFPIO API
